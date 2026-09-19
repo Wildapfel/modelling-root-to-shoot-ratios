@@ -1,6 +1,6 @@
 #
 <p align="center">
-  <img src="./data/images/plant_image.jpg" />
+  <img src="./.images/plant_image.jpg" height="200" width="400"/>
 </p>
 
 <h1 align="middle">Statistical Modellig of root-to-shoot ratios in Barley Seedlings</h1>
