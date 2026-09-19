@@ -1,0 +1,237 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsfonts,graphicx}
+\usepackage[a4paper, left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\setlength{\parskip}{10pt}
+\setlength{\parindent}{0pt}
+\usepackage{enumitem}
+
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+\linespread{0.0}
+
+\captionsetup{width=0.8\textwidth}
+
+\definecolor{codegray}{gray}{0.95}
+\lstset{
+	backgroundcolor=\color{codegray},
+	basicstyle=\ttfamily\small,
+	frame=single,
+	breaklines=true
+}
+
+\def\imgDir{"../reports/figures"}
+\def\reduceVerticalSpace{\vspace{-0.1cm}}
+\def\reduceItemSpace{\itemsep0em }
+
+\renewcommand{\figurename}{Fig.}
+
+\begin{document}
+	% Titleplage
+	\thispagestyle{empty}
+
+	\begin{center}
+		\LARGE
+		\textbf{Report: root-to-shoot ratio} \vspace{0.5cm}
+		\hrule
+	\end{center}
+	\tableofcontents
+	\bigskip  
+	\bigskip  
+	\hrule
+	
+	\section{Summary}
+		
+		\textbf{Data Exploration}
+		\begin{itemize}
+			\reduceVerticalSpace
+			\reduceItemSpace
+			\item Root mass slightly more right-skewed then sprout mass
+			\item Sprout-root-mass-ratio shows stronger peak around 0.5 - 0.7
+			\item High correlation between sprout- and root-mass  ($r = 0.76$)
+		\end{itemize}
+		
+		\textbf{Marginal Distribution}
+		\begin{itemize}
+			\reduceVerticalSpace
+			\reduceItemSpace
+			\item Gamma fits data better then Normal, support with Kullback-Leibler-Divergence
+		\end{itemize}
+		
+		\textbf{Ratio Modeling}
+		\begin{itemize}
+			\reduceVerticalSpace
+			\reduceItemSpace
+			\item The theoretical model doesn't match the empirical distribution of the ratios
+			\item Supports statistical dependency of root- and sprout-mass
+		\end{itemize}
+		
+		\textbf{Interpretation}
+		\begin{itemize}
+			\reduceVerticalSpace
+			\reduceItemSpace
+			\item The growth of root and sprout might be statistical dependent (with statistical power)
+			\item Since the theoretical model under estimates the peak, one could argue that this ratio range might be a optima for breeding
+			\item Since I don't have much information about the data, I cannot interpret much about the biology
+		\end{itemize}
+		\newpage
+
+	
+	\section{Data Exploration}
+
+		\subsection*{Data Distribution}
+	
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale=0.5]{"\imgDir/hists_sprout_mass_root_mas_mass_ratio.png"}
+				\caption{Exploitative analysis. Left: Sprout mass data distribution.  Middle: Root mass data distribution.  Right: Mass-Ratio distribution. }
+			\end{figure}
+			
+			\textbf{Masses}
+			\begin{itemize}
+				\reduceVerticalSpace
+				\reduceItemSpace
+				\item The masses of sprouts and roots tend to be slightly right skewed (rechtsschief)  
+				\item $Weights \in \mathbb{R}_+$   
+				\item Just a normal distribution might now be appropriate, because its highly likely it will extend into the negatives and doesn't catch the skewness  
+				\item A Gamma might fits the marginal distribution better, because: $X \in \mathbb{R}_{+}$
+			\end{itemize}
+		
+			\textbf{Ratio}
+			\begin{itemize}
+				\reduceVerticalSpace
+				\reduceItemSpace
+				\item The skweness seem to not be present here   
+				\item $Ratio \in [0, 1]$    
+				\item Intuitivly (and by their definition) a beta might fit best here  
+			\end{itemize}
+		
+		\subsection*{Data Correlation}
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[scale=0.5]{"\imgDir/corr_root_sprout_mass.png"}
+				\caption{Scatter plot of root and sprout mass.}
+			\end{figure}
+			
+			\begin{itemize}
+				\item Hight correlation between the masses (r=$\approx$0.76)
+				\item Implying a statistical dependency between both parameters
+			\end{itemize}	
+		\newpage
+	
+	\section{Marginal Distribution}
+		\subsection*{Gamma fits data better then a Normal}
+			\begin{figure}[h!]
+				\centering
+				\begin{tabular}{cc}
+					\includegraphics[scale=0.5]{"\imgDir/inspect_fit_sprout.png"}		 
+					& \includegraphics[scale=0.5]{"\imgDir/inspect_fit_root.png"}	
+				\end{tabular}
+				\caption{Continuous Curves of estimated Distributions}
+			\end{figure}
+			
+			\begin{figure}[h!]
+				\centering
+				\begin{tabular}{cc}
+					\includegraphics[scale=0.5]{"\imgDir/inspect_discrete_gamma_fit_sprout.png"}
+					& \includegraphics[scale=0.5]{"\imgDir/inspect_discrete_normal_fit_sprout.png"}	
+					\\	 
+					\includegraphics[scale=0.5]{"\imgDir/inspect_discrete_gamma_fit_root.png"}
+					& \includegraphics[scale=0.5]{"\imgDir/inspect_discrete_normal_fit_root.png"}	
+				\end{tabular}
+				\caption{Discrete bars of estimated Distributions}
+			\end{figure}
+			
+			\begin{itemize}
+				\reduceVerticalSpace
+				\reduceItemSpace
+				\item Just by visually inspecting the fitting, I would argue that the Gamma fits $X_{sprout}$ as well as $X_{root}$ considerably better then a Normal  
+				\item A gamma distribution can model the skewness of data
+				\item Also a normal extends into negatives numbers, which the data clearly is not showing 
+			\end{itemize}
+			\textbf{Estimated parameters from Gamma and Normal (sprout and root)}
+			\begin{center}
+				\begin{tabular}{lcccc}
+					& $\alpha$ & $\beta$ &$\mu$ &$\sigma$ \\
+					Sprout & 3.46 & 0.231 & 14.97 & 8.05 \\
+					Root & 2.09 & 0.227 & 9.23 & 6.38 \\
+				\end{tabular}
+			\end{center}
+			
+		\subsection*{Further Evaluation using Kullback-Leibler-Divergence}
+		
+			\textbf{Sprout}	
+			\begin{itemize}
+				\reduceItemSpace
+				\reduceVerticalSpace
+				\item KLD$_{Gamma}$ = 0.0363
+				\item KLD$_{Normal}$ = 0.0936
+			\end{itemize}
+			
+			\textbf{Root}	
+			\begin{itemize}
+				\reduceItemSpace
+				\reduceVerticalSpace
+				\item KLD$_{Gamma}$ = 0.0273
+				\item KLD$_{Normal}$ = 0.1159
+			\end{itemize}
+		
+			\textbf{KLD support}
+			\begin{itemize}
+				\item KLD clearly supports my previous statement, that Gamma captures data much better, therefore is favorable
+			\end{itemize}
+		
+		\subsection*{Note on the gamma modelling}
+		
+		\begin{itemize}
+			\reduceVerticalSpace
+			\reduceItemSpace
+			\item One can notice that:  $\beta_{root} \approx \beta_{sprout}$
+			\item This supports the theoretical distrubtion for the ratio transformation later
+			\item But also that:  $\alpha_{root} < \alpha_{sprout}$, implying that the skewness of the root distribution is stronger !
+		\end{itemize}
+
+	\section{Ratio-Modelling using Beta Distribution}
+	
+		\subsection*{Root-To-Shoot Ratio}
+			
+			\textbf{Theoretically}
+			
+			\begin{tabular}{ll}
+				$\quad X_1 \sim Ga(x_1| \alpha_1, \beta)$ & Shown in previous section \\
+				$\quad X_2 \sim Ga(x_2| \alpha_2, \beta)$ & Shown in previous section \\
+				$\quad Y = \frac{X_1}{X_1 + X_2}$ & Transformation \\
+				$\quad Y \sim Be(y|\alpha_1, \alpha_2)$ & Under the assumption that $\beta_{root} = \beta_{sprout} = \beta$ and $X_1 \perp\!\!\!\perp X_2 $  (independent). \\ 
+			\end{tabular}
+
+	
+		\begin{figure}
+			\centering
+			\includegraphics[scale=0.6]{"\imgDir/ratio_theoretical_beta_fit.png"}
+			\caption{Theoretical Beta curve fitting.}
+		\end{figure}
+	
+		\begin{itemize}
+			\reduceVerticalSpace
+			\reduceItemSpace
+			\item One can clearly see that the theoretically derived beta distribution doesn't fit the empirical ratios
+		\end{itemize}
+		
+	\section{Interpretation}
+		\begin{itemize}
+			\reduceVerticalSpace
+			\reduceItemSpace
+			\item The poor fit quality of the estimated beta distribution  is an indicator that both masses are statistically dependent and further supports the correlation 
+			\item This validates, that the correlation breaks the independency assumption of the theoretical beta
+			\item One could interpret that this peak is the result of stronger dependency (also correlation) of those seedlings masses
+			\item Unfortunately, I don't have to much information about the data, especially I don't know if certain seedlings perform better than other (for breeding purpose)
+			\item I could argue that this ratio range (0.5 - 0.7) might be a optimal target for breeding selection (with statistical power)
+		\end{itemize}
+	
+	
+\end{document}

@@ -1,0 +1,8 @@
+name: stats-env
+channels:
+  - conda-forge
+dependencies:
+  - pandas
+  - scipy
+  - matplotlib
+  - numpy       # for excel data
