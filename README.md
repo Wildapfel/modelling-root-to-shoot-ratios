@@ -25,3 +25,6 @@ root-to-sproot-ratio/
 
 ## Data
 This data set was provided by the MLU Halle-Wittenberg (AG Quint, Ertragsphysiologie der Kulturpflanzen, NatFak) during my master's programme. The data is not publicly available, therefore i anonymized the files. 
+
+## Report
+Please feel free and visit the [report](https://github.com/Wildapfel/modelling-root-to-shoot-ratios/blob/master/reports/root_to_shoot_ratio.pdf) for this project.
